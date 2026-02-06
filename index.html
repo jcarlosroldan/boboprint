@@ -12,6 +12,7 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="style.css">
+	<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.157.0/build/three.module.js"}}</script>
 </head>
 <body>
 
@@ -19,7 +20,7 @@
 <div class="cursor-dot"></div>
 
 <nav>
-	<a href="#" class="logo">BOBOPRINT</a>
+	<a href="#" class="logo">BOBO <span>PRINT</span></a>
 	<div class="nav-links">
 		<a href="#proceso"><span class="es">Proceso</span><span class="en">Process</span></a>
 		<a href="#galeria"><span class="es">Galería</span><span class="en">Gallery</span></a>
@@ -42,26 +43,7 @@
 </div>
 
 <section id="hero">
-	<div class="hero-shapes">
-		<div class="cube-3d cube-1">
-			<div class="face front"></div><div class="face back"></div>
-			<div class="face left"></div><div class="face right"></div>
-			<div class="face top"></div><div class="face bottom"></div>
-		</div>
-		<div class="cube-3d cube-2">
-			<div class="face front"></div><div class="face back"></div>
-			<div class="face left"></div><div class="face right"></div>
-			<div class="face top"></div><div class="face bottom"></div>
-		</div>
-		<div class="ring ring-1"></div>
-		<div class="ring ring-2"></div>
-		<div class="ring ring-3"></div>
-		<div class="dot dot-1"></div>
-		<div class="dot dot-2"></div>
-		<div class="dot dot-3"></div>
-		<div class="dot dot-4"></div>
-		<div class="dot dot-5"></div>
-	</div>
+	<canvas id="hero-canvas"></canvas>
 	<div class="hero-content">
 		<h1 class="tagline es">
 			<span class="line"><span class="muted">De </span><span class="digital">píxel</span></span>
@@ -72,7 +54,7 @@
 			<span class="line"><span class="muted">to </span><span class="craft">paintbrush</span></span>
 		</h1>
 		<p class="hero-sub">
-			<span class="es">Impresion 3D, diseno y pintura a mano en Sevilla</span>
+			<span class="es">Impresión 3D, diseño y pintura a mano en Sevilla</span>
 			<span class="en">3D printing, design & hand-painting in Seville</span>
 		</p>
 		<a href="#galeria" class="hero-cta">
@@ -86,7 +68,7 @@
 
 <section id="intro">
 	<p class="intro-text reveal">
-		<span class="es">No somos una imprenta. Somos <em>artesanos digitales</em>. Disenamos, imprimimos y pintamos a mano lo que necesites: desde figuras decorativas hasta piezas funcionales, pasando por replicas de cine y objetos que <em>aun no existen</em>.</span>
+		<span class="es">No somos una imprenta. Somos <em>artesanos digitales</em>. Diseñamos, imprimimos y pintamos a mano lo que necesites: desde figuras decorativas hasta piezas funcionales, pasando por réplicas de cine y objetos que <em>aún no existen</em>.</span>
 		<span class="en">We're not a print shop. We're <em>digital artisans</em>. We design, print and hand-paint whatever you need: from decorative figures to functional parts, movie replicas and objects that <em>don't exist yet</em>.</span>
 	</p>
 </section>
@@ -99,17 +81,17 @@
 		<div class="process-card reveal" style="--delay: 0">
 			<span class="process-number">01</span>
 			<h3><span class="es">Imagina</span><span class="en">Imagine</span></h3>
-			<p><span class="es">Cuentanos tu idea, por loca que sea. Si la puedes pensar, la podemos crear.</span><span class="en">Tell us your idea, no matter how wild. If you can think it, we can make it.</span></p>
+			<p><span class="es">Cuéntanos tu idea, por loca que sea. Si la puedes pensar, la podemos crear.</span><span class="en">Tell us your idea, no matter how wild. If you can think it, we can make it.</span></p>
 		</div>
 		<div class="process-card reveal" style="--delay: 1">
 			<span class="process-number">02</span>
-			<h3><span class="es">Disenamos</span><span class="en">We design</span></h3>
+			<h3><span class="es">Diseñamos</span><span class="en">We design</span></h3>
 			<p><span class="es">Modelamos tu idea en 3D desde cero, ajustando cada detalle contigo.</span><span class="en">We model your idea in 3D from scratch, fine-tuning every detail with you.</span></p>
 		</div>
 		<div class="process-card reveal" style="--delay: 2">
 			<span class="process-number">03</span>
 			<h3><span class="es">Imprimimos</span><span class="en">We print</span></h3>
-			<p><span class="es">Materializamos el diseno capa a capa con la tecnologia y el material adecuados.</span><span class="en">We bring the design to life layer by layer with the right tech and materials.</span></p>
+			<p><span class="es">Materializamos el diseño capa a capa con la tecnología y el material adecuados.</span><span class="en">We bring the design to life layer by layer with the right tech and materials.</span></p>
 		</div>
 		<div class="process-card reveal" style="--delay: 3">
 			<span class="process-number">04</span>
@@ -121,59 +103,59 @@
 
 <section id="galeria">
 	<h2 class="section-title reveal">
-		<span class="es">Galeria</span><span class="en">Gallery</span>
+		<span class="es">Galería</span><span class="en">Gallery</span>
 	</h2>
 	<div class="gallery-filters reveal">
 		<button class="filter-btn active" data-filter="all"><span class="es">Todo</span><span class="en">All</span></button>
 		<button class="filter-btn" data-filter="figuras"><span class="es">Figuras</span><span class="en">Figures</span></button>
-		<button class="filter-btn" data-filter="decoracion"><span class="es">Decoracion</span><span class="en">Decor</span></button>
+		<button class="filter-btn" data-filter="decoracion"><span class="es">Decoración</span><span class="en">Decor</span></button>
 		<button class="filter-btn" data-filter="props">Props</button>
 		<button class="filter-btn" data-filter="funcional"><span class="es">Funcional</span><span class="en">Functional</span></button>
 	</div>
 	<div class="gallery-grid">
-		<div class="gallery-item reveal" data-category="figuras" style="background: linear-gradient(135deg, #e63946, #ff6b35)">
+		<div class="gallery-item reveal" data-category="figuras" style="background-image: url('https://picsum.photos/seed/bobo-dragon/600/800')">
 			<div class="gallery-overlay">
 				<span class="gallery-cat"><span class="es">Figuras</span><span class="en">Figures</span></span>
-				<span class="gallery-title"><span class="es">Dragon articulado</span><span class="en">Articulated dragon</span></span>
+				<span class="gallery-title"><span class="es">Dragón articulado</span><span class="en">Articulated dragon</span></span>
 			</div>
 		</div>
-		<div class="gallery-item reveal" data-category="decoracion" style="background: linear-gradient(135deg, #06d6a0, #1b9aaa)">
+		<div class="gallery-item reveal" data-category="decoracion" style="background-image: url('https://picsum.photos/seed/bobo-planter/600/600')">
 			<div class="gallery-overlay">
-				<span class="gallery-cat"><span class="es">Decoracion</span><span class="en">Decor</span></span>
-				<span class="gallery-title"><span class="es">Maceta geometrica</span><span class="en">Geometric planter</span></span>
+				<span class="gallery-cat"><span class="es">Decoración</span><span class="en">Decor</span></span>
+				<span class="gallery-title"><span class="es">Maceta geométrica</span><span class="en">Geometric planter</span></span>
 			</div>
 		</div>
-		<div class="gallery-item reveal" data-category="props" style="background: linear-gradient(135deg, #3d5a80, #748cab)">
+		<div class="gallery-item reveal" data-category="props" style="background-image: url('https://picsum.photos/seed/bobo-helmet/800/600')">
 			<div class="gallery-overlay">
 				<span class="gallery-cat">Props</span>
 				<span class="gallery-title"><span class="es">Casco Mandalorian</span><span class="en">Mandalorian helmet</span></span>
 			</div>
 		</div>
-		<div class="gallery-item reveal" data-category="funcional" style="background: linear-gradient(135deg, #5e60ce, #7400b8)">
+		<div class="gallery-item reveal" data-category="funcional" style="background-image: url('https://picsum.photos/seed/bobo-mount/800/400')">
 			<div class="gallery-overlay">
 				<span class="gallery-cat"><span class="es">Funcional</span><span class="en">Functional</span></span>
 				<span class="gallery-title"><span class="es">Soporte a medida</span><span class="en">Custom mount</span></span>
 			</div>
 		</div>
-		<div class="gallery-item reveal" data-category="figuras" style="background: linear-gradient(135deg, #ff6b35, #ffd166)">
+		<div class="gallery-item reveal" data-category="figuras" style="background-image: url('https://picsum.photos/seed/bobo-bust/600/800')">
 			<div class="gallery-overlay">
 				<span class="gallery-cat"><span class="es">Figuras</span><span class="en">Figures</span></span>
 				<span class="gallery-title"><span class="es">Busto pintado</span><span class="en">Painted bust</span></span>
 			</div>
 		</div>
-		<div class="gallery-item reveal" data-category="decoracion" style="background: linear-gradient(135deg, #ffd166, #ff9f1c)">
+		<div class="gallery-item reveal" data-category="decoracion" style="background-image: url('https://picsum.photos/seed/bobo-lamp/600/600')">
 			<div class="gallery-overlay">
-				<span class="gallery-cat"><span class="es">Decoracion</span><span class="en">Decor</span></span>
-				<span class="gallery-title"><span class="es">Lampara litofana</span><span class="en">Lithophane lamp</span></span>
+				<span class="gallery-cat"><span class="es">Decoración</span><span class="en">Decor</span></span>
+				<span class="gallery-title"><span class="es">Lámpara litófana</span><span class="en">Lithophane lamp</span></span>
 			</div>
 		</div>
-		<div class="gallery-item reveal" data-category="props" style="background: linear-gradient(135deg, #2b2d42, #3d5a80)">
+		<div class="gallery-item reveal" data-category="props" style="background-image: url('https://picsum.photos/seed/bobo-sword/600/800')">
 			<div class="gallery-overlay">
 				<span class="gallery-cat">Props</span>
-				<span class="gallery-title"><span class="es">Espada replica</span><span class="en">Replica sword</span></span>
+				<span class="gallery-title"><span class="es">Espada réplica</span><span class="en">Replica sword</span></span>
 			</div>
 		</div>
-		<div class="gallery-item reveal" data-category="funcional" style="background: linear-gradient(135deg, #1b9aaa, #06d6a0)">
+		<div class="gallery-item reveal" data-category="funcional" style="background-image: url('https://picsum.photos/seed/bobo-desk/600/400')">
 			<div class="gallery-overlay">
 				<span class="gallery-cat"><span class="es">Funcional</span><span class="en">Functional</span></span>
 				<span class="gallery-title"><span class="es">Organizador de escritorio</span><span class="en">Desk organizer</span></span>
@@ -187,40 +169,40 @@
 		<div class="about-text reveal">
 			<h2><span class="es">El artesano</span><span class="en">The artisan</span></h2>
 			<p>
-				<span class="es"><strong>Miguel Angel Leon Baquero</strong>. Sevillano, disenador 3D y pintor de miniaturas reconvertido en artesano digital. Lo que empezo como hobby se convirtio en Boboprint: un taller donde la tecnologia y el arte van de la mano. Cada pieza que sale de aqui lleva horas de diseno, impresion y pintura manual, porque creemos que lo impreso en 3D no tiene por que parecer impreso en 3D.</span>
-				<span class="en"><strong>Miguel Angel Leon Baquero</strong>. Sevillian, 3D designer and miniature painter turned digital artisan. What started as a hobby became Boboprint: a workshop where technology and art go hand in hand. Every piece that leaves here carries hours of design, printing and hand-painting, because we believe 3D printed doesn't have to look 3D printed.</span>
+				<span class="es"><strong>Miguel Ángel León Baquero</strong>. Sevillano, diseñador 3D y pintor de miniaturas reconvertido en artesano digital. Lo que empezó como hobby se convirtió en Boboprint: un taller donde la tecnología y el arte van de la mano. Cada pieza que sale de aquí lleva horas de diseño, impresión y pintura manual, porque creemos que lo impreso en 3D no tiene por qué parecer impreso en 3D.</span>
+				<span class="en"><strong>Miguel Ángel León Baquero</strong>. Sevillian, 3D designer and miniature painter turned digital artisan. What started as a hobby became Boboprint: a workshop where technology and art go hand in hand. Every piece that leaves here carries hours of design, printing and hand-painting, because we believe 3D printed doesn't have to look 3D printed.</span>
 			</p>
 		</div>
-		<div class="about-image reveal"></div>
+		<div class="about-image reveal" style="background-image: url('https://picsum.photos/seed/bobo-workshop/600/800')"></div>
 	</div>
 </section>
 
 <section id="contacto">
 	<div class="contact-content">
 		<h2 class="contact-heading reveal">
-			<span class="es">&iquest;Tienes una idea?</span><span class="en">Got an idea?</span>
+			<span class="es">¿Tienes una idea?</span><span class="en">Got an idea?</span>
 		</h2>
 		<p class="contact-sub reveal">
-			<span class="es">Hagamosla realidad.</span><span class="en">Let's make it real.</span>
+			<span class="es">Hagámosla realidad.</span><span class="en">Let's make it real.</span>
 		</p>
 		<div class="contact-buttons reveal">
-			<a href="https://wa.me/34XXXXXXXXX" target="_blank" rel="noopener" class="btn btn-whatsapp">
+			<a href="https://wa.me/34638096175" target="_blank" rel="noopener" class="btn btn-whatsapp">
 				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
 				WhatsApp
 			</a>
-			<a href="https://instagram.com/boboprint" target="_blank" rel="noopener" class="btn btn-instagram">
-				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
-				Instagram
+			<a href="https://t.me/Julius_Pepperwood" target="_blank" rel="noopener" class="btn btn-telegram">
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg>
+				Telegram
 			</a>
 		</div>
 	</div>
 </section>
 
 <footer>
-	<span class="logo">BOBOPRINT</span>
-	<p>Sevilla, Espana</p>
+	<span class="logo">BOBO <span>PRINT</span></span>
+	<p>Sevilla, España</p>
 </footer>
 
-<script src="script.js"></script>
+<script type="module" src="script.js"></script>
 </body>
 </html>
