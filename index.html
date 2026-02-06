@@ -26,75 +26,100 @@
 
 <section id="hero">
 	<canvas id="hero-canvas"></canvas>
-	<div class="hero-mark">BOBO <span>PRINT</span></div>
-	<button class="hero-lang lang-toggle"><span class="es">EN</span><span class="en">ES</span></button>
-	<div class="hero-text">
-		<h1 class="tagline es">
-			<span class="line">De píxel</span>
-			<span class="line indent">a pincel</span>
-		</h1>
-		<h1 class="tagline en">
-			<span class="line">From pixel</span>
-			<span class="line indent">to paintbrush</span>
-		</h1>
-	</div>
-	<div class="scroll-hint">
-		<span class="es">scroll</span><span class="en">scroll</span>
-	</div>
-</section>
-
-<section class="work-wrapper">
-	<div class="work-sticky">
-		<span class="work-label"><span class="es">Trabajos</span><span class="en">Work</span></span>
-		<div class="work-track">
-			<article class="work-item" style="background-image:url('https://picsum.photos/seed/bp1/1200/900')">
-				<div class="work-info">
-					<span class="work-num">01</span>
-					<span class="work-cat"><span class="es">Figuras</span><span class="en">Figures</span></span>
-					<h3><span class="es">Dragón articulado</span><span class="en">Articulated dragon</span></h3>
-				</div>
-			</article>
-			<article class="work-item" style="background-image:url('https://picsum.photos/seed/bp2/1200/900')">
-				<div class="work-info">
-					<span class="work-num">02</span>
-					<span class="work-cat">Props</span>
-					<h3><span class="es">Casco Mandalorian</span><span class="en">Mandalorian helmet</span></h3>
-				</div>
-			</article>
-			<article class="work-item" style="background-image:url('https://picsum.photos/seed/bp3/1200/900')">
-				<div class="work-info">
-					<span class="work-num">03</span>
-					<span class="work-cat"><span class="es">Decoración</span><span class="en">Decor</span></span>
-					<h3><span class="es">Maceta geométrica</span><span class="en">Geometric planter</span></h3>
-				</div>
-			</article>
-			<article class="work-item" style="background-image:url('https://picsum.photos/seed/bp4/1200/900')">
-				<div class="work-info">
-					<span class="work-num">04</span>
-					<span class="work-cat"><span class="es">Figuras</span><span class="en">Figures</span></span>
-					<h3><span class="es">Busto pintado</span><span class="en">Painted bust</span></h3>
-				</div>
-			</article>
-			<article class="work-item" style="background-image:url('https://picsum.photos/seed/bp5/1200/900')">
-				<div class="work-info">
-					<span class="work-num">05</span>
-					<span class="work-cat">Props</span>
-					<h3><span class="es">Espada réplica</span><span class="en">Replica sword</span></h3>
-				</div>
-			</article>
-			<article class="work-item" style="background-image:url('https://picsum.photos/seed/bp6/1200/900')">
-				<div class="work-info">
-					<span class="work-num">06</span>
-					<span class="work-cat"><span class="es">Decoración</span><span class="en">Decor</span></span>
-					<h3><span class="es">Lámpara litófana</span><span class="en">Lithophane lamp</span></h3>
-				</div>
-			</article>
+	<div class="hero-overlay">
+		<div class="hero-top">
+			<span class="hero-mark">BOBO <span>PRINT</span></span>
+			<button class="hero-lang lang-toggle"><span class="es">EN</span><span class="en">ES</span></button>
 		</div>
-		<div class="work-progress"><div class="work-bar"></div></div>
+		<div class="hero-content">
+			<div class="hero-steps es">
+				<span class="hero-step" style="--i:0">Diseño</span>
+				<span class="hero-step" style="--i:1">Impresión</span>
+				<span class="hero-step" style="--i:2">Pintura</span>
+			</div>
+			<div class="hero-steps en">
+				<span class="hero-step" style="--i:0">Design</span>
+				<span class="hero-step" style="--i:1">Printing</span>
+				<span class="hero-step" style="--i:2">Painting</span>
+			</div>
+			<p class="hero-sub">
+				<span class="es">Impresión 3D con diseño y pintura a mano · Sevilla</span>
+				<span class="en">3D printing with custom design and hand painting · Seville</span>
+			</p>
+		</div>
+		<div class="scroll-hint">scroll</div>
 	</div>
 </section>
 
-<section id="miguel">
+<section id="proceso">
+	<div class="proceso-grid">
+		<div class="proceso-step reveal">
+			<span class="paso-num">01</span>
+			<h3 class="paso-title"><span class="es">Diseño</span><span class="en">Design</span></h3>
+			<p class="paso-desc"><span class="es">Modelado 3D a medida desde tu idea o referencia.</span><span class="en">Custom 3D modeling from your idea or reference.</span></p>
+		</div>
+		<div class="proceso-step reveal">
+			<span class="paso-num">02</span>
+			<h3 class="paso-title"><span class="es">Impresión</span><span class="en">Printing</span></h3>
+			<p class="paso-desc"><span class="es">FDM y resina con acabados profesionales.</span><span class="en">FDM and resin with professional finishes.</span></p>
+		</div>
+		<div class="proceso-step reveal">
+			<span class="paso-num">03</span>
+			<h3 class="paso-title"><span class="es">Pintura</span><span class="en">Painting</span></h3>
+			<p class="paso-desc"><span class="es">Pintura a mano que convierte plástico en arte.</span><span class="en">Hand painting that turns plastic into art.</span></p>
+		</div>
+	</div>
+</section>
+
+<section id="trabajos">
+	<span class="section-label reveal"><span class="es">Trabajos</span><span class="en">Work</span></span>
+	<div class="gallery">
+		<article class="gallery-item reveal" style="background-image:url('https://picsum.photos/seed/bp1/800/1000')">
+			<div class="gallery-info">
+				<span class="gallery-cat"><span class="es">Figuras</span><span class="en">Figures</span></span>
+				<h3><span class="es">Dragón articulado</span><span class="en">Articulated dragon</span></h3>
+				<span class="gallery-tags"><span class="es">Diseño · Impresión · Pintura</span><span class="en">Design · Printing · Painting</span></span>
+			</div>
+		</article>
+		<article class="gallery-item reveal" style="background-image:url('https://picsum.photos/seed/bp2/800/1200')">
+			<div class="gallery-info">
+				<span class="gallery-cat">Props</span>
+				<h3><span class="es">Casco Mandalorian</span><span class="en">Mandalorian helmet</span></h3>
+				<span class="gallery-tags"><span class="es">Impresión · Pintura</span><span class="en">Printing · Painting</span></span>
+			</div>
+		</article>
+		<article class="gallery-item reveal" style="background-image:url('https://picsum.photos/seed/bp3/800/1000')">
+			<div class="gallery-info">
+				<span class="gallery-cat"><span class="es">Decoración</span><span class="en">Decor</span></span>
+				<h3><span class="es">Maceta geométrica</span><span class="en">Geometric planter</span></h3>
+				<span class="gallery-tags"><span class="es">Diseño · Impresión</span><span class="en">Design · Printing</span></span>
+			</div>
+		</article>
+		<article class="gallery-item reveal" style="background-image:url('https://picsum.photos/seed/bp4/800/1000')">
+			<div class="gallery-info">
+				<span class="gallery-cat"><span class="es">Figuras</span><span class="en">Figures</span></span>
+				<h3><span class="es">Busto pintado</span><span class="en">Painted bust</span></h3>
+				<span class="gallery-tags"><span class="es">Diseño · Impresión · Pintura</span><span class="en">Design · Printing · Painting</span></span>
+			</div>
+		</article>
+		<article class="gallery-item reveal" style="background-image:url('https://picsum.photos/seed/bp5/800/1200')">
+			<div class="gallery-info">
+				<span class="gallery-cat">Props</span>
+				<h3><span class="es">Espada réplica</span><span class="en">Replica sword</span></h3>
+				<span class="gallery-tags"><span class="es">Impresión · Pintura</span><span class="en">Printing · Painting</span></span>
+			</div>
+		</article>
+		<article class="gallery-item reveal" style="background-image:url('https://picsum.photos/seed/bp6/800/1000')">
+			<div class="gallery-info">
+				<span class="gallery-cat"><span class="es">Decoración</span><span class="en">Decor</span></span>
+				<h3><span class="es">Lámpara litófana</span><span class="en">Lithophane lamp</span></h3>
+				<span class="gallery-tags"><span class="es">Diseño · Impresión</span><span class="en">Design · Printing</span></span>
+			</div>
+		</article>
+	</div>
+</section>
+
+<section id="miguel" class="reveal">
 	<div class="miguel-bg" style="background-image:url('https://picsum.photos/seed/bp-taller/1600/900')"></div>
 	<div class="miguel-content">
 		<p><strong>Miguel Ángel León Baquero</strong></p>
