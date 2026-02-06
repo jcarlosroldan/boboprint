@@ -1,209 +1,184 @@
 import * as THREE from 'three'
 
-// Three.js hero
+// Three.js: 3D printing build + paint animation
 
 const canvas = document.getElementById('hero-canvas')
 if (canvas) {
-	const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: 'high-performance' })
-	renderer.setSize(window.innerWidth, window.innerHeight)
+	const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true })
+	renderer.setSize(innerWidth, innerHeight)
 	renderer.setPixelRatio(Math.min(devicePixelRatio, 2))
+	renderer.toneMapping = THREE.ACESFilmicToneMapping
+	renderer.toneMappingExposure = 1.2
 
 	const scene = new THREE.Scene()
-	const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.1, 100)
-	camera.position.z = 4
+	const camera = new THREE.PerspectiveCamera(40, innerWidth / innerHeight, 0.1, 100)
+	camera.position.set(1.5, 0.8, 3.5)
+	camera.lookAt(0.8, 0, 0)
 
-	const vertexShader = `
-		uniform float uTime;
-		uniform vec2 uMouse;
-		varying vec3 vNormal;
-		varying vec3 vPos;
-		varying float vDisp;
-
-		vec4 permute(vec4 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
-		vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
-
-		float snoise(vec3 v) {
-			const vec2 C = vec2(1.0/6.0, 1.0/3.0);
-			const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);
-			vec3 i = floor(v + dot(v, C.yyy));
-			vec3 x0 = v - i + dot(i, C.xxx);
-			vec3 g = step(x0.yzx, x0.xyz);
-			vec3 l = 1.0 - g;
-			vec3 i1 = min(g.xyz, l.zxy);
-			vec3 i2 = max(g.xyz, l.zxy);
-			vec3 x1 = x0 - i1 + C.xxx;
-			vec3 x2 = x0 - i2 + C.yyy;
-			vec3 x3 = x0 - D.yyy;
-			i = mod(i, 289.0);
-			vec4 p = permute(permute(permute(
-				i.z + vec4(0.0, i1.z, i2.z, 1.0))
-				+ i.y + vec4(0.0, i1.y, i2.y, 1.0))
-				+ i.x + vec4(0.0, i1.x, i2.x, 1.0));
-			float n_ = 1.0/7.0;
-			vec3 ns = n_ * D.wyz - D.xzx;
-			vec4 j = p - 49.0 * floor(p * ns.z * ns.z);
-			vec4 x_ = floor(j * ns.z);
-			vec4 y_ = floor(j - 7.0 * x_);
-			vec4 x = x_ * ns.x + ns.yyyy;
-			vec4 y = y_ * ns.x + ns.yyyy;
-			vec4 h = 1.0 - abs(x) - abs(y);
-			vec4 b0 = vec4(x.xy, y.xy);
-			vec4 b1 = vec4(x.zw, y.zw);
-			vec4 s0 = floor(b0) * 2.0 + 1.0;
-			vec4 s1 = floor(b1) * 2.0 + 1.0;
-			vec4 sh = -step(h, vec4(0.0));
-			vec4 a0 = b0.xzyw + s0.xzyw * sh.xxyy;
-			vec4 a1 = b1.xzyw + s1.xzyw * sh.zzww;
-			vec3 p0 = vec3(a0.xy, h.x);
-			vec3 p1 = vec3(a0.zw, h.y);
-			vec3 p2 = vec3(a1.xy, h.z);
-			vec3 p3 = vec3(a1.zw, h.w);
-			vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2,p2), dot(p3,p3)));
-			p0 *= norm.x; p1 *= norm.y; p2 *= norm.z; p3 *= norm.w;
-			vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
-			m = m * m;
-			return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));
-		}
-
-		void main() {
-			float n1 = snoise(position * 1.5 + uTime * 0.5);
-			float n2 = snoise(position * 3.0 - uTime * 0.3);
-			float disp = n1 * 0.2 + n2 * 0.08;
-			vec3 dir = normalize(position + vec3(0.001));
-			float mouseInf = dot(dir, normalize(vec3(uMouse, 0.5)));
-			disp += mouseInf * 0.06 * length(uMouse);
-			vec3 newPos = position + normal * disp;
-			vNormal = normalize(normalMatrix * normal);
-			vPos = (modelViewMatrix * vec4(newPos, 1.0)).xyz;
-			vDisp = disp;
-			gl_Position = projectionMatrix * modelViewMatrix * vec4(newPos, 1.0);
-		}
-	`
-
-	const fragmentShader = `
-		varying vec3 vNormal;
-		varying vec3 vPos;
-		varying float vDisp;
-		uniform float uTime;
-
-		void main() {
-			vec3 orange = vec3(1.0, 0.42, 0.21);
-			vec3 teal = vec3(0.31, 0.8, 0.77);
-			vec3 gold = vec3(1.0, 0.82, 0.4);
-			vec3 viewDir = normalize(-vPos);
-			float fresnel = pow(1.0 - abs(dot(vNormal, viewDir)), 3.0);
-			vec3 color = mix(teal, orange, vDisp * 2.5 + 0.5);
-			color = mix(color, gold, fresnel * 0.5);
-			float alpha = 0.06 + fresnel * 0.75;
-			gl_FragColor = vec4(color, alpha);
-		}
-	`
+	// Lights
+	const ambient = new THREE.AmbientLight(0x221111, 0.8)
+	scene.add(ambient)
+	const keyLight = new THREE.PointLight(0xffa060, 40, 20)
+	keyLight.position.set(3, 3, 4)
+	scene.add(keyLight)
+	const fillLight = new THREE.PointLight(0x4ecdc4, 15, 20)
+	fillLight.position.set(-3, -1, 3)
+	scene.add(fillLight)
+	const rimLight = new THREE.PointLight(0xff6b35, 20, 20)
+	rimLight.position.set(0, 2, -3)
+	scene.add(rimLight)
 
 	const isMobile = innerWidth < 768
+	const geo = new THREE.TorusKnotGeometry(0.8, 0.28, isMobile ? 128 : 200, isMobile ? 16 : 32, 2, 3)
+	geo.computeBoundingBox()
+	const yMin = geo.boundingBox.min.y
+	const yMax = geo.boundingBox.max.y
+
+	const vertSrc = `
+		varying vec3 vWorldPos;
+		varying vec3 vNormal;
+		varying vec2 vUv;
+		void main() {
+			vec4 wp = modelMatrix * vec4(position, 1.0);
+			vWorldPos = wp.xyz;
+			vNormal = normalize((modelMatrix * vec4(normal, 0.0)).xyz);
+			vUv = uv;
+			gl_Position = projectionMatrix * viewMatrix * wp;
+		}
+	`
+
+	const fragSrc = `
+		precision mediump float;
+		uniform float uBuild;
+		uniform float uPaint;
+		uniform vec3 uCamPos;
+		varying vec3 vWorldPos;
+		varying vec3 vNormal;
+		varying vec2 vUv;
+
+		void main() {
+			float y = vWorldPos.y;
+			if (y > uBuild) discard;
+
+			float edge = 1.0 - smoothstep(0.0, 0.06, uBuild - y);
+			float paintLine = mix(${yMin.toFixed(2)} - 0.5, ${yMax.toFixed(2)} + 0.5, uPaint);
+			float painted = smoothstep(paintLine, paintLine - 0.4, y);
+
+			vec3 raw = vec3(0.55, 0.5, 0.45);
+			vec3 cBot = vec3(0.78, 0.55, 0.3);
+			vec3 cTop = vec3(0.85, 0.3, 0.35);
+			vec3 paintCol = mix(cBot, cTop, smoothstep(${yMin.toFixed(2)}, ${yMax.toFixed(2)}, y));
+
+			vec3 viewDir = normalize(uCamPos - vWorldPos);
+			float fresnel = pow(1.0 - abs(dot(vNormal, viewDir)), 3.0);
+			paintCol = mix(paintCol, vec3(0.3, 0.75, 0.7), fresnel * 0.25);
+
+			vec3 surf = mix(raw, paintCol, painted);
+
+			vec3 lDir = normalize(vec3(1.5, 2.0, 3.0));
+			float diff = max(dot(vNormal, lDir), 0.0);
+			vec3 h = normalize(lDir + viewDir);
+			float spec = pow(max(dot(vNormal, h), 0.0), 50.0) * painted;
+			vec3 lit = surf * (0.15 + diff * 0.65) + vec3(1.0) * spec * 0.25;
+
+			vec3 glow = vec3(1.0, 0.45, 0.1);
+			lit = mix(lit, glow, edge * 0.9);
+
+			gl_FragColor = vec4(lit, 1.0);
+		}
+	`
+
 	const uniforms = {
-		uTime: { value: 0 },
-		uMouse: { value: new THREE.Vector2(0, 0) }
+		uBuild: { value: yMin - 0.1 },
+		uPaint: { value: 0 },
+		uCamPos: { value: camera.position }
 	}
 
-	// Main blob
-	const blob = new THREE.Mesh(
-		new THREE.IcosahedronGeometry(1.3, isMobile ? 3 : 4),
-		new THREE.ShaderMaterial({
-			vertexShader,
-			fragmentShader,
-			uniforms,
-			transparent: true,
-			depthWrite: false,
-			blending: THREE.AdditiveBlending,
-			side: THREE.DoubleSide
-		})
-	)
-	scene.add(blob)
+	const solidMat = new THREE.ShaderMaterial({
+		vertexShader: vertSrc,
+		fragmentShader: fragSrc,
+		uniforms,
+		side: THREE.DoubleSide
+	})
 
-	// Wireframe overlay
-	const wire = new THREE.Mesh(
-		new THREE.IcosahedronGeometry(1.38, 2),
-		new THREE.MeshBasicMaterial({
-			color: 0xff6b35,
-			wireframe: true,
-			transparent: true,
-			opacity: 0.06,
-			blending: THREE.AdditiveBlending
-		})
-	)
+	const mesh = new THREE.Mesh(geo, solidMat)
+	mesh.position.x = 0.8
+	scene.add(mesh)
+
+	// Wireframe preview
+	const wireGeo = new THREE.TorusKnotGeometry(0.8, 0.28, 64, 8, 2, 3)
+	const wireMat = new THREE.MeshBasicMaterial({
+		color: 0x4ecdc4,
+		wireframe: true,
+		transparent: true,
+		opacity: 0.04
+	})
+	const wire = new THREE.Mesh(wireGeo, wireMat)
+	wire.position.x = 0.8
 	scene.add(wire)
 
 	// Particles
-	const pCount = isMobile ? 600 : 1500
-	const pPositions = new Float32Array(pCount * 3)
-	const pColors = new Float32Array(pCount * 3)
-	const orange = new THREE.Color(0xff6b35)
-	const teal = new THREE.Color(0x4ecdc4)
+	const pCount = isMobile ? 200 : 600
+	const pPos = new Float32Array(pCount * 3)
 	for (let i = 0; i < pCount; i++) {
-		const i3 = i * 3
-		const r = 1.8 + Math.random() * 4
+		const r = 1.5 + Math.random() * 3
 		const theta = Math.random() * Math.PI * 2
 		const phi = Math.acos(2 * Math.random() - 1)
-		pPositions[i3] = r * Math.sin(phi) * Math.cos(theta)
-		pPositions[i3 + 1] = r * Math.sin(phi) * Math.sin(theta)
-		pPositions[i3 + 2] = r * Math.cos(phi)
-		const c = Math.random() > 0.5 ? orange : teal
-		pColors[i3] = c.r
-		pColors[i3 + 1] = c.g
-		pColors[i3 + 2] = c.b
+		pPos[i * 3] = r * Math.sin(phi) * Math.cos(theta) + 0.8
+		pPos[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta)
+		pPos[i * 3 + 2] = r * Math.cos(phi)
 	}
 	const pGeo = new THREE.BufferGeometry()
-	pGeo.setAttribute('position', new THREE.BufferAttribute(pPositions, 3))
-	pGeo.setAttribute('color', new THREE.BufferAttribute(pColors, 3))
-	const particles = new THREE.Points(pGeo, new THREE.PointsMaterial({
-		size: isMobile ? 1.5 : 2,
+	pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3))
+	scene.add(new THREE.Points(pGeo, new THREE.PointsMaterial({
+		size: 1.2,
 		sizeAttenuation: true,
-		vertexColors: true,
+		color: 0xff6b35,
 		transparent: true,
-		opacity: 0.5,
+		opacity: 0.25,
 		blending: THREE.AdditiveBlending,
 		depthWrite: false
-	}))
-	scene.add(particles)
+	})))
 
-	// Mouse tracking
-	let mx = 0, my = 0, mtx = 0, mty = 0
+	// Mouse
+	let mx = 0, my = 0, tmx = 0, tmy = 0
 	document.addEventListener('mousemove', e => {
-		mtx = (e.clientX / innerWidth - 0.5) * 2
-		mty = -(e.clientY / innerHeight - 0.5) * 2
+		tmx = (e.clientX / innerWidth - 0.5) * 0.4
+		tmy = -(e.clientY / innerHeight - 0.5) * 0.3
 	})
 
-	// Scroll fade
+	const ease = t => 1 - Math.pow(1 - Math.min(t, 1), 3)
 	const hero = document.getElementById('hero')
-	let scrollProgress = 0
-
-	const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches
-	const startTime = performance.now()
+	const clock = new THREE.Clock()
 
 	function animate() {
 		requestAnimationFrame(animate)
+		const t = clock.getElapsedTime()
 
-		const elapsed = (performance.now() - startTime) / 1000
-		const scale = Math.min(elapsed / 1.2, 1)
-		const eased = 1 - Math.pow(1 - scale, 3)
+		// Build: 0-2.5s
+		uniforms.uBuild.value = yMin + (yMax - yMin) * ease(t / 2.5) + 0.1
 
-		uniforms.uTime.value += reducedMotion ? 0 : 0.008
-		mx += (mtx - mx) * 0.05
-		my += (mty - my) * 0.05
-		uniforms.uMouse.value.set(mx, my)
+		// Paint: 0.8-3s
+		if (t > 0.8) uniforms.uPaint.value = ease((t - 0.8) / 2.2)
 
-		blob.scale.setScalar(eased)
-		blob.rotation.y += 0.003
-		blob.rotation.x += 0.001
-		wire.scale.setScalar(eased)
-		wire.rotation.y += 0.002
-		wire.rotation.x += 0.0008
-		particles.rotation.y += 0.0004
+		// Rotate after build
+		if (t > 2.5) {
+			mesh.rotation.y += 0.004
+			wire.rotation.y += 0.004
+		}
 
-		scrollProgress = Math.min(hero.getBoundingClientRect().top < 0 ? -hero.getBoundingClientRect().top / innerHeight : 0, 1)
-		camera.position.z = 4 + scrollProgress * 3
-		blob.material.opacity = 1 - scrollProgress
-		wire.material.opacity = 0.06 * (1 - scrollProgress)
+		// Mouse orbit
+		mx += (tmx - mx) * 0.03
+		my += (tmy - my) * 0.03
+		camera.position.x = 1.5 + mx * 2
+		camera.position.y = 0.8 + my * 1.5
+		camera.lookAt(0.8, 0, 0)
+
+		// Scroll fade
+		const rect = hero.getBoundingClientRect()
+		const fade = Math.max(0, 1 - Math.max(0, -rect.top) / (innerHeight * 0.6))
+		mesh.material.opacity = fade
+		wire.material.opacity = 0.04 * fade
 
 		renderer.render(scene, camera)
 	}
@@ -216,110 +191,81 @@ if (canvas) {
 	})
 }
 
-// Language toggle
+// Language toggle (all buttons with class lang-toggle)
 
-document.querySelector('.lang-toggle').addEventListener('click', () => {
-	document.documentElement.lang = document.documentElement.lang === 'es' ? 'en' : 'es'
-})
-
-// Mobile menu
-
-const menuBtn = document.querySelector('.menu-btn')
-const mobileMenu = document.querySelector('.mobile-menu')
-
-menuBtn.addEventListener('click', () => {
-	menuBtn.classList.toggle('active')
-	mobileMenu.classList.toggle('active')
-	document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : ''
-})
-
-mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-	menuBtn.classList.remove('active')
-	mobileMenu.classList.remove('active')
-	document.body.style.overflow = ''
-}))
-
-// Nav scroll
-
-let ticking = false
-window.addEventListener('scroll', () => {
-	if (!ticking) {
-		requestAnimationFrame(() => {
-			document.querySelector('nav').classList.toggle('scrolled', scrollY > 60)
-			ticking = false
-		})
-		ticking = true
-	}
-})
-
-// Scroll reveal
-
-const observer = new IntersectionObserver(entries => {
-	entries.forEach(entry => {
-		if (entry.isIntersecting) {
-			entry.target.classList.add('revealed')
-			observer.unobserve(entry.target)
-		}
+document.querySelectorAll('.lang-toggle').forEach(btn =>
+	btn.addEventListener('click', () => {
+		document.documentElement.lang = document.documentElement.lang === 'es' ? 'en' : 'es'
 	})
-}, { threshold: 0.1 })
+)
 
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el))
+// Header show on scroll
+
+const header = document.querySelector('header')
+let lastY = 0
+window.addEventListener('scroll', () => {
+	header.classList.toggle('visible', scrollY > innerHeight * 0.8)
+	lastY = scrollY
+}, { passive: true })
+
+// Horizontal scroll gallery (desktop only)
+
+const wrapper = document.querySelector('.work-wrapper')
+const track = document.querySelector('.work-track')
+const bar = document.querySelector('.work-bar')
+
+function setupHorizontalScroll() {
+	if (innerWidth <= 768) {
+		wrapper.style.height = ''
+		track.style.transform = ''
+		return
+	}
+	const totalScroll = track.scrollWidth - innerWidth
+	wrapper.style.height = (totalScroll + innerHeight) + 'px'
+}
+
+function updateHorizontalScroll() {
+	if (innerWidth <= 768) return
+	const rect = wrapper.getBoundingClientRect()
+	const progress = Math.max(0, Math.min(1, -rect.top / (wrapper.offsetHeight - innerHeight)))
+	const maxTx = track.scrollWidth - innerWidth
+	track.style.transform = `translateX(${-progress * maxTx}px)`
+	if (bar) bar.style.width = (progress * 100) + '%'
+}
+
+setupHorizontalScroll()
+window.addEventListener('resize', setupHorizontalScroll)
+window.addEventListener('scroll', updateHorizontalScroll, { passive: true })
 
 // Custom cursor
 
 const cursor = document.querySelector('.cursor')
-const cursorDot = document.querySelector('.cursor-dot')
-let cx = -100, cy = -100
 
 if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+	let cx = -100, cy = -100
 	document.addEventListener('mousemove', e => { cx = e.clientX; cy = e.clientY })
-
 	;(function loop() {
 		cursor.style.left = cx + 'px'
 		cursor.style.top = cy + 'px'
-		cursorDot.style.left = cx + 'px'
-		cursorDot.style.top = cy + 'px'
 		requestAnimationFrame(loop)
 	})()
-
-	document.addEventListener('mouseleave', () => { cursor.style.opacity = cursorDot.style.opacity = '0' })
-	document.addEventListener('mouseenter', () => { cursor.style.opacity = cursorDot.style.opacity = '1' })
-
-	document.querySelectorAll('a, button, .gallery-item').forEach(el => {
+	document.addEventListener('mouseleave', () => cursor.style.opacity = '0')
+	document.addEventListener('mouseenter', () => cursor.style.opacity = '1')
+	document.querySelectorAll('a, button, .work-item').forEach(el => {
 		el.addEventListener('mouseenter', () => cursor.classList.add('hover'))
 		el.addEventListener('mouseleave', () => cursor.classList.remove('hover'))
 	})
 }
 
-// Gallery filter
+// Reveal on scroll
 
-const filterBtns = document.querySelectorAll('.filter-btn')
-const galleryItems = document.querySelectorAll('.gallery-item')
-
-filterBtns.forEach(btn => btn.addEventListener('click', () => {
-	const filter = btn.dataset.filter
-	filterBtns.forEach(b => b.classList.remove('active'))
-	btn.classList.add('active')
-	galleryItems.forEach(item => item.style.opacity = '0')
-	setTimeout(() => {
-		galleryItems.forEach(item => {
-			const show = filter === 'all' || item.dataset.category === filter
-			item.style.display = show ? '' : 'none'
-			if (show) requestAnimationFrame(() => item.style.opacity = '1')
-		})
-	}, 300)
-}))
-
-// Gallery tilt
-
-if (matchMedia('(hover: hover)').matches) {
-	galleryItems.forEach(card => {
-		card.addEventListener('mousemove', e => {
-			const r = card.getBoundingClientRect()
-			const x = (e.clientX - r.left) / r.width - 0.5
-			const y = (e.clientY - r.top) / r.height - 0.5
-			card.style.transform = `perspective(600px) rotateX(${-y * 6}deg) rotateY(${x * 6}deg) scale(1.02)`
-		})
-		card.addEventListener('mouseleave', () => { card.style.transform = '' })
+const revealObs = new IntersectionObserver(entries => {
+	entries.forEach(e => {
+		if (e.isIntersecting) {
+			e.target.classList.add('revealed')
+			revealObs.unobserve(e.target)
+		}
 	})
-}
+}, { threshold: 0.15 })
+
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el))
