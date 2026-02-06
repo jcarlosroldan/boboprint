@@ -155,29 +155,33 @@ header {
 .hero-steps {
 	display: flex;
 	flex-direction: column;
+	font-size: clamp(3.5rem, 10vw, 9rem);
+	font-weight: 700;
+	line-height: 0.95;
+	letter-spacing: -0.02em;
 }
 
 .hero-step {
 	display: block;
-	font-size: clamp(3rem, 9vw, 8rem);
-	font-weight: 700;
-	line-height: 1.05;
-	letter-spacing: -0.02em;
 	opacity: 0;
 	transform: translateX(-40px);
 	animation: heroSlide 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-	animation-delay: calc(var(--i) * 0.15s);
-}
+	animation-delay: calc(var(--i) * 0.2s);
 
-.hero-step:nth-child(1) { color: var(--teal); }
-.hero-step:nth-child(2) { padding-left: clamp(2rem, 5vw, 6rem); }
-.hero-step:nth-child(3) { color: var(--accent); padding-left: clamp(4rem, 10vw, 12rem); }
+	em {
+		font-style: normal;
+	}
+
+	&:nth-child(1) em { color: var(--teal); }
+	&:nth-child(2) { padding-left: clamp(1.5rem, 4vw, 4rem); }
+	&:nth-child(2) em { color: var(--accent); }
+}
 
 .hero-sub {
 	margin-top: 2rem;
 	font-size: clamp(0.85rem, 1.5vw, 1.1rem);
 	color: var(--muted);
-	letter-spacing: 0.1em;
+	letter-spacing: 0.05em;
 	opacity: 0;
 	animation: fadeIn 0.8s ease forwards 0.6s;
 }
@@ -192,53 +196,8 @@ header {
 	animation: pulse 2s ease-in-out infinite;
 }
 
-#proceso {
-	padding: 8rem 3rem;
-}
-
-.proceso-grid {
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	gap: 3rem;
-}
-
-.proceso-step {
-	position: relative;
-	padding: 3rem 0 0 1.5rem;
-	border-left: 2px solid var(--muted);
-}
-
-.proceso-step:nth-child(1) { border-color: var(--teal); }
-.proceso-step:nth-child(2) { margin-top: 3rem; }
-.proceso-step:nth-child(3) { border-color: var(--accent); margin-top: 6rem; }
-
-.paso-num {
-	font-size: clamp(4rem, 8vw, 7rem);
-	font-weight: 700;
-	opacity: 0.05;
-	line-height: 1;
-	position: absolute;
-	top: -0.5rem;
-	right: 0;
-}
-
-.paso-title {
-	font-size: 1.3rem;
-	font-weight: 600;
-	margin-bottom: 0.5rem;
-}
-
-.proceso-step:nth-child(1) .paso-title { color: var(--teal); }
-.proceso-step:nth-child(3) .paso-title { color: var(--accent); }
-
-.paso-desc {
-	color: var(--muted);
-	font-size: 0.95rem;
-	line-height: 1.5;
-}
-
 #trabajos {
-	padding: 4rem 0;
+	padding: 6rem 0;
 }
 
 .section-label {
@@ -305,13 +264,57 @@ header {
 	letter-spacing: 0.05em;
 }
 
+#estudio {
+	padding: 8rem 3rem;
+	display: flex;
+	justify-content: center;
+}
+
+.estudio-content {
+	max-width: 720px;
+}
+
+.estudio-content h2 {
+	font-size: clamp(1.8rem, 4vw, 3rem);
+	font-weight: 700;
+	line-height: 1.2;
+	margin-bottom: 1.5rem;
+}
+
+.estudio-text {
+	color: var(--muted);
+	font-size: 1.05rem;
+	line-height: 1.7;
+	margin-bottom: 2.5rem;
+}
+
+.estudio-tags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.6rem;
+
+	span {
+		padding: 0.4rem 1rem;
+		border: 1px solid rgba(255,255,255,0.1);
+		border-radius: 100px;
+		font-size: 0.85rem;
+		color: var(--muted);
+		letter-spacing: 0.03em;
+		transition: border-color 0.3s, color 0.3s;
+
+		&:hover {
+			border-color: var(--accent);
+			color: var(--text);
+		}
+	}
+}
+
 #miguel {
 	position: relative;
 	height: 70vh;
 	display: flex;
 	align-items: flex-end;
 	overflow: hidden;
-	margin-top: 6rem;
 }
 
 .miguel-bg {
@@ -456,14 +459,6 @@ footer {
 	.hero-overlay { background: rgba(8,8,8,0.4); }
 	header { padding: 1rem 1.5rem; }
 
-	.proceso-grid {
-		grid-template-columns: 1fr;
-		gap: 2rem;
-	}
-	.proceso-step:nth-child(2),
-	.proceso-step:nth-child(3) { margin-top: 0; }
-	#proceso { padding: 5rem 1.5rem; }
-
 	.gallery {
 		columns: 1;
 		padding: 0 1.5rem;
@@ -474,6 +469,9 @@ footer {
 		height: 55vh;
 	}
 	.section-label { padding: 0 1.5rem 2rem; }
+	#trabajos { padding: 4rem 0; }
+
+	#estudio { padding: 5rem 1.5rem; }
 
 	#miguel { height: 60vh; }
 	.miguel-content { padding: 2rem 1.5rem; }
