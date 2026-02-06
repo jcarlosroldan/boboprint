@@ -407,6 +407,13 @@ header {
 	&:hover { box-shadow: 0 8px 30px rgba(34,158,217,0.25); }
 }
 
+.btn-ig {
+	background: #E4405F;
+	color: #fff;
+
+	&:hover { box-shadow: 0 8px 30px rgba(228,64,95,0.25); }
+}
+
 footer {
 	padding: 2rem 3rem;
 	text-align: center;
