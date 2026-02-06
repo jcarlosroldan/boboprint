@@ -14,19 +14,13 @@ if (canvas) {
 	camera.lookAt(0, 0, 0)
 
 	const isMobile = innerWidth < 768
-	const detail = isMobile ? 4 : 5
-	const geo = new THREE.IcosahedronGeometry(1.1, detail)
-	const pos = geo.getAttribute('position')
-	const nrm = geo.getAttribute('normal')
-
-	for (let i = 0; i < pos.count; i++) {
-		const x = pos.getX(i), y = pos.getY(i), z = pos.getZ(i)
-		const nx = nrm.getX(i), ny = nrm.getY(i), nz = nrm.getZ(i)
-		const d = 0.12 * Math.sin(x * 3.5 + y * 2.1) * Math.cos(z * 2.8 + x * 1.3)
-				+ 0.05 * Math.sin(x * 8 + z * 6) * Math.cos(y * 7)
-				+ 0.08 * Math.cos(y * 2 + z * 1.5)
-		pos.setXYZ(i, x + nx * d, y + ny * d, z + nz * d)
-	}
+	const { vertices, indices } = await (await fetch('mask.json')).json()
+	let geo = new THREE.BufferGeometry()
+	geo.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3))
+	geo.setIndex(indices)
+	geo = geo.toNonIndexed()
+	geo.rotateX(-Math.PI / 2)
+	geo.center()
 	geo.computeVertexNormals()
 
 	const vertSrc = `
@@ -105,7 +99,7 @@ if (canvas) {
 		const t = clock.getElapsedTime()
 		uniforms.uTime.value = t
 
-		mesh.rotation.y = t * 0.15
+		mesh.rotation.y = Math.sin(t * 0.2) * 0.4
 		mesh.rotation.x = Math.sin(t * 0.1) * 0.1
 		mesh.scale.setScalar(1 + Math.sin(t * 0.5) * 0.02)
 
