@@ -153,10 +153,12 @@ if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
 
 const revealObs = new IntersectionObserver(entries => {
 	entries.forEach(e => {
-		if (e.isIntersecting) {
-			e.target.classList.add('revealed')
-			revealObs.unobserve(e.target)
-		}
+		if (!e.isIntersecting) return
+		e.target.classList.add('revealed')
+		const vid = e.target.querySelector('video[data-src]')
+		if (vid) { vid.src = vid.dataset.src; vid.play() }
+		if (e.target.dataset.bg) e.target.style.backgroundImage = `url('${e.target.dataset.bg}')`
+		revealObs.unobserve(e.target)
 	})
 }, { threshold: 0.15 })
 document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el))
