@@ -6,9 +6,5 @@
 
 - [ ] Register hannyalabs.com domain (OVH)
 - [ ] Configure custom domain in GitHub Pages
-- [ ] Store / product catalog with paywall (Stripe or similar)
-- [ ] CMS for articles and products (non-techy owner-friendly, e.g. Decap CMS or similar headless)
-- [ ] Custom product ordering flow (client uploads/describes, owner quotes)
-- [ ] Pre-made product listings by owner
-- [ ] Delivery management (shipping integration)
-- [ ] Owner onboarding (credentials, admin panel)
+
+Orders and communication happen through WhatsApp and Instagram (buttons already on the site). If the business grows enough to need a proper catalog, checkout, and order tracking, migrate to Shopify rather than bolting services onto the static site.
