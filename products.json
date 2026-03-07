@@ -10,6 +10,17 @@
       "descEn": "head of goya so so good omg",
       "image": "img/products/producto-1772897389844.jpg",
       "visible": true
+    },
+    {
+      "id": "1772897743767",
+      "nameEs": "Puerta sintoista",
+      "nameEn": "sintoist door",
+      "category": "decoracion",
+      "price": 50,
+      "descEs": "cosa muy wayt",
+      "descEn": "thing so cool",
+      "image": "img/products/producto-1772897811536.jpg",
+      "visible": true
     }
   ]
 }
