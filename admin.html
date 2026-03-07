@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hannya Labs — Admin</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%A7%8A</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+<!-- ── SETUP SCREEN ───────────────────────────────────────── -->
+<div id="screen-setup" class="screen">
+  <div class="setup-card">
+    <div class="setup-logo">HANNYA <span>LABS</span></div>
+    <h1>Primera configuración</h1>
+    <p class="setup-desc">Configura el acceso al repositorio de GitHub para sincronizar los productos.</p>
+    <div class="form-group">
+      <label for="setup-pat">GitHub Personal Access Token</label>
+      <input type="password" id="setup-pat" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off">
+      <span class="form-hint">Necesita permiso <code>contents: write</code> en el repo</span>
+    </div>
+    <div class="form-group">
+      <label for="setup-repo">Repositorio (usuario/repo)</label>
+      <input type="text" id="setup-repo" value="jcarlosroldan/boboprint" placeholder="usuario/repo">
+    </div>
+    <div class="form-group">
+      <label for="setup-pwd">Contraseña del panel</label>
+      <input type="password" id="setup-pwd" placeholder="Mínimo 6 caracteres" autocomplete="new-password">
+    </div>
+    <div class="form-group">
+      <label for="setup-pwd2">Confirmar contraseña</label>
+      <input type="password" id="setup-pwd2" placeholder="Repite la contraseña" autocomplete="new-password">
+    </div>
+    <button id="setup-btn" class="btn-primary">Guardar configuración</button>
+    <div id="setup-status" class="status-msg"></div>
+  </div>
+</div>
+
+<!-- ── LOGIN SCREEN ───────────────────────────────────────── -->
+<div id="screen-login" class="screen" hidden>
+  <div class="setup-card">
+    <div class="setup-logo">HANNYA <span>LABS</span></div>
+    <h1>Admin</h1>
+    <div class="form-group">
+      <label for="login-pwd">Contraseña</label>
+      <input type="password" id="login-pwd" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <button id="login-btn" class="btn-primary">Entrar</button>
+    <div id="login-status" class="status-msg"></div>
+    <button id="reset-config-btn" class="btn-link">Reconfigurar acceso</button>
+  </div>
+</div>
+
+<!-- ── PANEL SCREEN ───────────────────────────────────────── -->
+<div id="screen-panel" class="screen" hidden>
+  <header class="admin-header">
+    <span class="logo">HANNYA <span>LABS</span> — Admin</span>
+    <div class="admin-header-actions">
+      <a href="index.html" class="btn-link">← Ver web</a>
+      <button id="sync-btn" class="btn-secondary">Sync to GitHub</button>
+      <button id="logout-btn" class="btn-link">Logout</button>
+    </div>
+  </header>
+  <div class="admin-body">
+    <aside class="admin-sidebar">
+      <button id="add-product-btn" class="btn-primary btn-full">+ Nuevo producto</button>
+      <div id="product-list"></div>
+    </aside>
+    <main class="admin-main">
+      <div id="product-form-container">
+        <div class="empty-state">
+          <p>Selecciona un producto o crea uno nuevo</p>
+        </div>
+      </div>
+      <div id="admin-status" class="status-msg"></div>
+    </main>
+  </div>
+</div>
+
+<script src="admin.js"></script>
+</body>
+</html>

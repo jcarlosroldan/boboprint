@@ -162,3 +162,64 @@ const revealObs = new IntersectionObserver(entries => {
 	})
 }, { threshold: 0.15 })
 document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el))
+
+// ── Productos ─────────────────────────────────────────────
+const CATEGORY_LABELS = {
+  figuras:    { es: 'Figuras',    en: 'Figures'      },
+  maquetas:   { es: 'Maquetas',   en: 'Scale models' },
+  decoracion: { es: 'Decoración', en: 'Decor'        },
+  cosplay:    { es: 'Cosplay',    en: 'Cosplay'      },
+  props:      { es: 'Props',      en: 'Props'        },
+  prototipos: { es: 'Prototipos', en: 'Prototypes'   },
+}
+
+async function loadProductos() {
+  let data
+  try {
+    const res = await fetch('products.json')
+    if (!res.ok) return
+    data = await res.json()
+  } catch { return }
+
+  const visible = (data.products || []).filter(p => p.visible)
+  if (!visible.length) return
+
+  document.getElementById('productos')?.removeAttribute('hidden')
+  document.getElementById('nav-productos')?.removeAttribute('hidden')
+
+  const grid = document.getElementById('productos-grid')
+  visible.forEach(p => {
+    const card = document.createElement('article')
+    card.className = 'producto-card reveal'
+    const catEs = CATEGORY_LABELS[p.category]?.es ?? p.category
+    const catEn = CATEGORY_LABELS[p.category]?.en ?? p.category
+    const imgHtml = p.image
+      ? `<img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.nameEs || '')}" loading="lazy">`
+      : `<div class="producto-img-placeholder">🖨</div>`
+    const priceHtml = p.price != null
+      ? `<span class="producto-price">${Number(p.price).toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}</span>`
+      : ''
+    card.innerHTML = `
+      <div class="producto-img-wrap">${imgHtml}</div>
+      <div class="producto-info">
+        <span class="producto-cat"><span class="es">${catEs}</span><span class="en">${catEn}</span></span>
+        <h3 class="producto-name">
+          <span class="es">${escapeHtml(p.nameEs || '')}</span>
+          <span class="en">${escapeHtml(p.nameEn || '')}</span>
+        </h3>
+        ${priceHtml}
+      </div>`
+    grid.appendChild(card)
+    revealObs.observe(card)
+    if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      card.addEventListener('mouseenter', () => cursor.classList.add('hover'))
+      card.addEventListener('mouseleave', () => cursor.classList.remove('hover'))
+    }
+  })
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+}
+
+loadProductos()
