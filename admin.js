@@ -471,7 +471,7 @@ async function initSetup() {
       config = cfg
 
       showStatus(statusEl, '✓ Configuración guardada.', 'success')
-      setTimeout(() => showScreen('login'), 800)
+      setTimeout(() => { showScreen('login'); initLogin() }, 800)
     } catch (e) {
       showStatus(statusEl, 'No se pudo conectar con GitHub. Revisa el PAT y el repo.', 'error')
     } finally {
