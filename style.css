@@ -86,6 +86,51 @@ header {
 	&:hover { color: var(--text); }
 }
 
+.nav-dropdown {
+	position: relative;
+}
+
+.nav-dropdown-btn {
+	background: none;
+	border: none;
+	font-family: var(--font);
+	padding: 0;
+}
+
+.nav-dropdown-menu {
+	position: absolute;
+	top: calc(100% + 0.5rem);
+	right: 0;
+	background: rgba(8,8,8,0.95);
+	backdrop-filter: blur(12px);
+	border: 1px solid rgba(255,255,255,0.08);
+	border-radius: 8px;
+	min-width: 160px;
+	padding: 0.4rem 0;
+	opacity: 0;
+	pointer-events: none;
+	transform: translateY(-6px);
+	transition: opacity 0.2s, transform 0.2s;
+	z-index: 200;
+}
+
+.nav-dropdown:hover .nav-dropdown-menu,
+.nav-dropdown.open .nav-dropdown-menu {
+	opacity: 1;
+	pointer-events: auto;
+	transform: none;
+}
+
+.nav-dropdown-menu a {
+	display: block;
+	padding: 0.55rem 1.1rem;
+	font-size: 0.85rem;
+	color: var(--muted);
+	transition: color 0.2s;
+}
+
+.nav-dropdown-menu a:hover { color: var(--text); }
+
 .lang-toggle {
 	background: none;
 	border: 1px solid var(--muted);
@@ -305,10 +350,15 @@ header {
   background: #111;
 }
 
+.producto-card-link { display:block; text-decoration:none; color:inherit; }
 .producto-info { padding: 1.25rem; }
 .producto-cat { display:block; font-size:0.7rem; text-transform:uppercase; letter-spacing:.15em; color:var(--accent); margin-bottom:0.4rem; }
 .producto-name { font-size:1.05rem; font-weight:600; margin-bottom:0.75rem; }
 .producto-price { font-size:1.1rem; font-weight:700; color:var(--accent); }
+.producto-price-row { display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap; }
+.price-original { text-decoration:line-through; color:var(--muted); font-weight:400; }
+.price-final { color:var(--accent); font-weight:700; }
+.discount-badge { background:var(--accent); color:#fff; font-size:0.7rem; font-weight:700; padding:0.15rem 0.45rem; border-radius:4px; letter-spacing:0.03em; }
 
 #estudio {
 	padding: 8rem 3rem;

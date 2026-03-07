@@ -271,6 +271,9 @@ function renderProductForm(p) {
     nameEs: '', nameEn: '',
     category: 'figuras',
     price: '',
+    discount: null,
+    stock: null,
+    weight: null,
     descEs: '', descEn: '',
     image: '',
     visible: true
@@ -302,6 +305,24 @@ function renderProductForm(p) {
           <label for="f-price">Precio (€)</label>
           <input type="number" id="f-price" min="0" step="0.01" value="${p.price != null ? p.price : ''}">
         </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="f-discount">Descuento (%)</label>
+          <input type="number" id="f-discount" min="0" max="100" step="1" value="${p.discount ?? ''}">
+          <span class="form-hint">0–100. Vacío = sin descuento</span>
+        </div>
+        <div class="form-group">
+          <label for="f-stock">Stock (unidades)</label>
+          <input type="number" id="f-stock" min="0" step="1" value="${p.stock ?? ''}">
+          <span class="form-hint">Vacío = sin límite / bajo pedido</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="f-weight">Peso (g)</label>
+        <input type="number" id="f-weight" min="0" step="1" value="${p.weight ?? ''}">
       </div>
 
       <div class="form-group">
@@ -388,6 +409,9 @@ function saveProduct(isNew, id) {
     nameEn:    document.getElementById('f-nameEn').value.trim(),
     category:  document.getElementById('f-category').value,
     price:     parseFloat(document.getElementById('f-price').value) || null,
+    discount:  parseFloat(document.getElementById('f-discount').value) || null,
+    stock:     parseInt(document.getElementById('f-stock').value, 10) || null,
+    weight:    parseFloat(document.getElementById('f-weight').value) || null,
     descEs:    document.getElementById('f-descEs').value.trim(),
     descEn:    document.getElementById('f-descEn').value.trim(),
     image:     pendingImageUpload ? pendingImageUpload.filename

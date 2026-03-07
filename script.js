@@ -185,10 +185,23 @@ async function loadProductos() {
   if (!visible.length) return
 
   document.getElementById('productos')?.removeAttribute('hidden')
-  document.getElementById('nav-productos')?.removeAttribute('hidden')
+  const navTienda = document.getElementById('nav-tienda')
+  if (navTienda) {
+    navTienda.removeAttribute('hidden')
+    navTienda.querySelector('.nav-dropdown-btn')?.addEventListener('click', () => {
+      navTienda.classList.toggle('open')
+    })
+    document.addEventListener('click', e => {
+      if (!navTienda.contains(e.target)) navTienda.classList.remove('open')
+    })
+  }
 
   const grid = document.getElementById('productos-grid')
   visible.forEach(p => {
+    const link = document.createElement('a')
+    link.href = `producto.html?id=${encodeURIComponent(p.id)}`
+    link.className = 'producto-card-link'
+
     const card = document.createElement('article')
     card.className = 'producto-card reveal'
     const catEs = CATEGORY_LABELS[p.category]?.es ?? p.category
@@ -196,9 +209,18 @@ async function loadProductos() {
     const imgHtml = p.image
       ? `<img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.nameEs || '')}" loading="lazy">`
       : `<div class="producto-img-placeholder">🖨</div>`
-    const priceHtml = p.price != null
-      ? `<span class="producto-price">${Number(p.price).toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}</span>`
-      : ''
+    let priceHtml = ''
+    if (p.price != null) {
+      if (p.discount) {
+        const final = p.price * (1 - p.discount / 100)
+        priceHtml = `
+          <span class="producto-price price-original">${Number(p.price).toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}</span>
+          <span class="producto-price price-final">${Number(final).toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}</span>
+          <span class="discount-badge">-${p.discount}%</span>`
+      } else {
+        priceHtml = `<span class="producto-price">${Number(p.price).toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}</span>`
+      }
+    }
     card.innerHTML = `
       <div class="producto-img-wrap">${imgHtml}</div>
       <div class="producto-info">
@@ -207,13 +229,14 @@ async function loadProductos() {
           <span class="es">${escapeHtml(p.nameEs || '')}</span>
           <span class="en">${escapeHtml(p.nameEn || '')}</span>
         </h3>
-        ${priceHtml}
+        <div class="producto-price-row">${priceHtml}</div>
       </div>`
-    grid.appendChild(card)
+    link.appendChild(card)
+    grid.appendChild(link)
     revealObs.observe(card)
     if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
-      card.addEventListener('mouseenter', () => cursor.classList.add('hover'))
-      card.addEventListener('mouseleave', () => cursor.classList.remove('hover'))
+      link.addEventListener('mouseenter', () => cursor.classList.add('hover'))
+      link.addEventListener('mouseleave', () => cursor.classList.remove('hover'))
     }
   })
 }

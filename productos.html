@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Productos — Hannya Labs</title>
+  <meta name="description" content="Catálogo de productos de Hannya Labs. Figuras, maquetas, decoración y más.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%A7%8A</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="productos.css">
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">HANNYA <span>LABS</span></a>
+  <div class="header-right">
+    <button class="lang-toggle"><span class="es">EN</span><span class="en">ES</span></button>
+    <div class="nav-dropdown" id="nav-tienda">
+      <button class="nav-dropdown-btn header-cta">
+        <span class="es">Tienda ▾</span><span class="en">Shop ▾</span>
+      </button>
+      <div class="nav-dropdown-menu">
+        <a href="productos.html"><span class="es">Productos</span><span class="en">Products</span></a>
+        <a href="productos.html#personalizados"><span class="es">Personalizados</span><span class="en">Custom orders</span></a>
+        <a href="index.html#contacto"><span class="es">Contacto</span><span class="en">Contact</span></a>
+      </div>
+    </div>
+    <a href="index.html#contacto" class="header-cta"><span class="es">Contacto</span><span class="en">Contact</span></a>
+  </div>
+</header>
+
+<main>
+  <section class="productos-hero">
+    <h1><span class="es">Productos</span><span class="en">Products</span></h1>
+  </section>
+
+  <section class="productos-controls">
+    <input id="search-input" type="search" placeholder="Buscar... / Search...">
+    <div id="cat-filters"></div>
+  </section>
+
+  <section class="productos-section">
+    <div id="productos-grid" class="productos-grid"></div>
+    <p id="no-results" hidden>
+      <span class="es">Sin resultados</span><span class="en">No results</span>
+    </p>
+  </section>
+
+  <section id="personalizados" class="personalizados-section">
+    <h2><span class="es">Personalizados</span><span class="en">Custom orders</span></h2>
+    <p>
+      <span class="es">Elaboramos productos a medida: figuras, props, maquetas y decoración únicos para ti. Cuéntanos tu idea y le damos forma.</span>
+      <span class="en">We craft custom pieces: unique figures, props, scale models and decor made just for you. Tell us your idea and we'll shape it.</span>
+    </p>
+    <a href="index.html#contacto" class="btn-contact">
+      <span class="es">Contáctanos</span><span class="en">Contact us</span>
+    </a>
+  </section>
+</main>
+
+<footer>HANNYA LABS · Sevilla</footer>
+
+<script src="productos.js"></script>
+</body>
+</html>
