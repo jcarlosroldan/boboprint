@@ -21,6 +21,17 @@
       "descEn": "thing so cool",
       "image": "img/products/producto-1772897811536.jpg",
       "visible": true
+    },
+    {
+      "id": "1772899185702",
+      "nameEs": "pokeball",
+      "nameEn": "pokeball",
+      "category": "figuras",
+      "price": 15,
+      "descEs": "pokeball to wapa",
+      "descEn": "pokeball so cool",
+      "image": "img/products/producto-1772899215825.jpg",
+      "visible": true
     }
   ]
 }
