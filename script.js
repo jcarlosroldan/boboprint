@@ -185,16 +185,6 @@ async function loadProductos() {
   if (!visible.length) return
 
   document.getElementById('productos')?.removeAttribute('hidden')
-  const navTienda = document.getElementById('nav-tienda')
-  if (navTienda) {
-    navTienda.removeAttribute('hidden')
-    navTienda.querySelector('.nav-dropdown-btn')?.addEventListener('click', () => {
-      navTienda.classList.toggle('open')
-    })
-    document.addEventListener('click', e => {
-      if (!navTienda.contains(e.target)) navTienda.classList.remove('open')
-    })
-  }
 
   const grid = document.getElementById('productos-grid')
   visible.forEach(p => {
@@ -243,6 +233,16 @@ async function loadProductos() {
 
 function escapeHtml(s) {
   return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+}
+
+const navTienda = document.getElementById('nav-tienda')
+if (navTienda) {
+  navTienda.querySelector('.nav-dropdown-btn')?.addEventListener('click', () => {
+    navTienda.classList.toggle('open')
+  })
+  document.addEventListener('click', e => {
+    if (!navTienda.contains(e.target)) navTienda.classList.remove('open')
+  })
 }
 
 loadProductos()
