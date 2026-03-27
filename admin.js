@@ -96,6 +96,14 @@ async function githubPut(path, base64Content, sha, message) {
 }
 
 async function loadProducts() {
+  // MODO PRUEBA: cargar desde archivo local
+  if (!config.pat) {
+    const res = await fetch('products.json')
+    const data = await res.json()
+    products = data.products || []
+    productsSha = null
+    return
+  }
   try {
     const data = await githubGet('products.json')
     const decoded = JSON.parse(atob(data.content.replace(/\s/g, '')))
@@ -567,28 +575,10 @@ async function initPanel() {
 
 // ── Boot ──────────────────────────────────────────────────
 async function boot() {
-  const stored = localStorage.getItem(CONFIG_KEY)
-  if (!stored) {
-    showScreen('setup')
-    initSetup()
-    return
-  }
-
-  try {
-    config = JSON.parse(stored)
-  } catch {
-    localStorage.removeItem(CONFIG_KEY)
-    showScreen('setup')
-    initSetup()
-    return
-  }
-
-  if (sessionStorage.getItem(SESSION_KEY)) {
-    await initPanel()
-  } else {
-    showScreen('login')
-    initLogin()
-  }
+  // MODO PRUEBA: saltar setup y login, ir directo al panel
+  config = { pat: '', repo: '', passwordHash: '' }
+  sessionStorage.setItem(SESSION_KEY, '1')
+  await initPanel()
 }
 
 // ── Dirty guard ───────────────────────────────────────────
